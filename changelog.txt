@@ -1,0 +1,15 @@
+Changelog for In Array
+==================================
+
+
+## 1.2
+
+- **Added**: Ability to define the array delimiter (default is | pipe)
+
+## 1.1
+
+- **Added**: Added in_array:no_results tag
+
+## 1.0
+
+- Release version
