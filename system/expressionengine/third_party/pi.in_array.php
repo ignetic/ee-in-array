@@ -2,7 +2,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'In Array',
-	'pi_version'		=> '1.3',
+	'pi_version'		=> '1.3.1',
 	'pi_author'			=> 'Simon Andersohn',
 	'pi_author_url'		=> '',
 	'pi_description'	=> 'Searches for a value within given pipe or comma separated values',
@@ -140,7 +140,7 @@ class In_array {
 	 * @access	public
 	 * @return	string
 	 */
-	function usage()
+	public static function usage()
 	{
 		ob_start(); 
 		?>
