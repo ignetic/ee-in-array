@@ -1,44 +1,41 @@
-In Array
-=================
-
-ExpressionEngine 2 Plugin
+In Array Usage
+====================
 
 Searches for a value within given pipe or comma separated values
-----------------------------------------------------------------
 
 To use this plugin, enter the value to search for in the value parameter
 and pipe or comma delimited values in the array parameter:
 
-`{exp:in_array value="3" array="2|4|5|20"}`
+{exp:in_array value="3" array="2|4|5|20"}
 
-`{exp:in_array value="Cow" array="The|Cow|Jumped|Over|The|Moon"}`
+{exp:in_array value="Cow" array="The|Cow|Jumped|Over|The|Moon"}
 
-**Typical use:**
+Typical use:
 
-`{if '{exp:in_array value="2" array="1|2|3"}'}
+{if '{exp:in_array value="2" array="1|2|3"}'}
 	We found your value
-{/if}`
+{/if}
 
-`{if '{exp:in_array not="4|5" array="1|2|3"}'}
+{if '{exp:in_array not="4|5" array="1|2|3"}'}
 	We did not find your value
-{/if}`
+{/if}
 
-**Tag Pair:**
+Tag Pair:
 
-`{exp:in_array:pair value="2" array="1|2|3"}
+{exp:in_array:pair value="2" array="1|2|3"}
 	{if no_results}Value not found{/if}
 	We found your value
-{/exp:in_array:pair}`
+{/exp:in_array:pair}
 
 Alternative no_results: Note that this only works with no "if" conditions inside it.
 
-`{exp:in_array:pair value="2" array="1|2|3"}
+{exp:in_array:pair value="2" array="1|2|3"}
 	{if in_array:no_results}Value not found{/if}
 	We found your value
-{/exp:in_array:pair}`
+{/exp:in_array:pair}
 
 
-**Available parameters:**
+Available parameters:
 
 value="X" : The value to find in the array
 not="X" : The value not to find in the array

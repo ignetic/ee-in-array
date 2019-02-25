@@ -2,7 +2,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'In Array',
-	'pi_version'		=> '1.3.1',
+	'pi_version'		=> '1.4',
 	'pi_author'			=> 'Simon Andersohn',
 	'pi_author_url'		=> '',
 	'pi_description'	=> 'Searches for a value within given pipe or comma separated values',
@@ -22,7 +22,7 @@ class In_array {
 	 */
     public function __construct()
     {
-        $this->EE =& get_instance();
+        $this->EE = get_instance();
 		
 		$this->return_data = $this->compare_array();
 	}
