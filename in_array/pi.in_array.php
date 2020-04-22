@@ -2,7 +2,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'In Array',
-	'pi_version'		=> '1.4',
+	'pi_version'		=> '1.5',
 	'pi_author'			=> 'Simon Andersohn',
 	'pi_author_url'		=> '',
 	'pi_description'	=> 'Searches for a value within given pipe or comma separated values',
@@ -32,13 +32,15 @@ class In_array {
 		
 		$return = $this->compare_array();
 		
+		$this->_prep_no_results();
+		
 		if ($return === TRUE)
 		{
 			return $this->EE->TMPL->tagdata;
 		}
 		else
 		{
-			return $this->no_results();
+			return $this->EE->TMPL->no_results();
 		}
 	}
 	
@@ -108,27 +110,32 @@ class In_array {
 				return false;
 		}
 	}
-
 	
-	private function no_results()
+	private function _prep_no_results()
 	{
-			
-		$tagdata  = $this->EE->TMPL->tagdata;
-		$tag_name = strtolower(get_class($this)).':no_results';
-		
-		$pattern = '#' .LD .'if ' .$tag_name .RD .'(.*?)' .LD .'/if' .RD .'#s';
+		// Shortcut to tagdata
+		$open = strtolower(get_class($this)).':no_results';
+		$td    = ee()->TMPL->tagdata;
+		$open  = 'if '. $open;
+		$close = '/if';
+		// Check if there is a custom no_results conditional
 
-		if (is_string($tagdata) && is_string($tag_name)
-		  && preg_match($pattern, $tagdata, $matches)
-		)
-		{
-			return $matches[1];
+		if (strpos($td, $open) !== FALSE
+			&& preg_match('#' .LD .$open .RD .'(.*?)' .LD .$close .RD .'#s', $td, $match)
+		){
+			ee()->TMPL->log_item("Prepping {$open} conditional");
+			// Check if there are conditionals inside of that
+			if (stristr($match[1], LD.'if'))
+			{
+				$match[0] = ee()->functions->full_tag($match[0], $td, LD.'if', LD.'\/if'.RD);
+			}
+			// Set template's no_results data to found chunk
+			ee()->TMPL->no_results = substr($match[0], strlen(LD.$open.RD), -strlen(LD.$close.RD));
+			// Remove no_results conditional from tagdata
+			$td = str_replace($match[0], '', $td);
 		}
-		
-		return $this->EE->TMPL->no_results();
 	}
-	
-	
+
 
 	// --------------------------------------------------------------------
 	
@@ -140,60 +147,16 @@ class In_array {
 	 * @access	public
 	 * @return	string
 	 */
+	
 	public static function usage()
 	{
-		ob_start(); 
-		?>
-		
-		Searches for a value within given pipe or comma separated values
-		
-		To use this plugin, enter the value to search for in the value parameter
-		and pipe or comma delimited values in the array parameter:
-
-		{exp:in_array value="3" array="2|4|5|20"}
-		
-		{exp:in_array value="Cow" array="The|Cow|Jumped|Over|The|Moon"}
-		
-		Typical use:
-		
-		{if '{exp:in_array value="2" array="1|2|3"}'}
-			We found your value
-		{/if}
-		
-		{if '{exp:in_array not="4|5" array="1|2|3"}'}
-			We did not find your value
-		{/if}
-		
-		Tag Pair:
-		
-		{exp:in_array:pair value="2" array="1|2|3"}
-			{if no_results}Value not found{/if}
-			We found your value
-		{/exp:in_array:pair}
-		
-		Alternative no_results: Note that this only works with no "if" conditions inside it.
-		
-		{exp:in_array:pair value="2" array="1|2|3"}
-			{if in_array:no_results}Value not found{/if}
-			We found your value
-		{/exp:in_array:pair}
-		
-
-		Available parameters:
-		
-		value="X" : The value to find in the array
-		not="X" : The value not to find in the array
-		array="1|2|3|4" : the values in the array to search
-		delimiter="|" : change the default pipe delimiter
-		case_insensitive="y" : make the search case insensitive
-
-		
-		<?php
-		$buffer = ob_get_contents();
-	
-		ob_end_clean(); 
-
-		return $buffer;
+		$output = '';
+		$file = __DIR__ .'/README.md';
+		if (file_exists($file))
+		{
+			$output = file_get_contents( __DIR__ .'/README.md');
+		}
+		return $output;
 	}
 
 	// --------------------------------------------------------------------

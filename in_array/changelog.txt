@@ -2,6 +2,11 @@ Changelog for In Array
 ==================================
 
 
+## 1.5
+
+- Updated no_results with conditions with _prep_no_results() function 
+- EE4 compatible
+
 ## 1.4
 
 - ExpressionEngine 3 compatibility
